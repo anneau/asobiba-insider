@@ -82,6 +82,58 @@
       },
       "tags": [],
       "implicitDependencies": ["insider"]
+    },
+    "insider-firebase": {
+      "root": "apps/insider-firebase",
+      "sourceRoot": "apps/insider-firebase/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/insider-firebase",
+            "main": "apps/insider-firebase/src/main.ts",
+            "tsConfig": "apps/insider-firebase/tsconfig.app.json",
+            "assets": ["apps/insider-firebase/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/insider-firebase/src/environments/environment.ts",
+                  "with": "apps/insider-firebase/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "insider-firebase:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/insider-firebase/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/insider-firebase"],
+          "options": {
+            "jestConfig": "apps/insider-firebase/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
     }
   }
 }
