@@ -25,7 +25,6 @@ const initState = {
 
 export const Form: VFC = () => {
   const { replace } = useRouter();
-  const [tabValue, setTabValue] = useState(0);
   const [state, setState] = useState<FormType>(initState);
   const { setUser } = useUserSetter();
   return (
@@ -39,24 +38,23 @@ export const Form: VFC = () => {
           />
         </Box>
         <Box sx={{ maxWidth: 250, mb: 2 }}>
-          <FormLabel>アバター: {avatars[tabValue].ja}</FormLabel>
-          <Tabs
-            variant="scrollable"
-            scrollButtons
-            allowScrollButtonsMobile
-            value={tabValue}
-            onChange={(_: React.SyntheticEvent, newValue: number) => {
-              setTabValue(newValue);
-              setState({ ...state, avatar: avatars[newValue].name });
-            }}
-          >
-            {avatars.map((item) => (
-              <Tab key={item.name} icon={<Animation name={item.name} />} />
+          <FormLabel>
+            アバター: {avatars.find((item) => item.name === state.avatar)?.ja}
+          </FormLabel>
+          <Box sx={{ maxWidth: 250, mb: 2 }}>
+            {avatars.map((avatar, index) => (
+              <Button
+                key={index}
+                onClick={() => setState({ ...state, avatar: avatar.name })}
+              >
+                <Animation name={avatar.name} />
+              </Button>
             ))}
-          </Tabs>
+          </Box>
         </Box>
         <Button
           variant="outlined"
+          disabled={!state.avatar || !state.name}
           onClick={() => {
             setUser(state.name, state.avatar);
             replace('/entrance');
