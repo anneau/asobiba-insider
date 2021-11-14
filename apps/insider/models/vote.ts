@@ -1,7 +1,9 @@
 export class Vote {
-  uid: string;
+  iam: string;
+  vote: string;
 
   constructor() {
-    this.uid = '';
+    this.iam = '';
+    this.vote = '';
   }
 }
