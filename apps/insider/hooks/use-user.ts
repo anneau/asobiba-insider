@@ -5,7 +5,7 @@ import { useAuth } from './use-auth';
 
 type User = {
   name: string;
-  avatar: string;
+  uid: string;
 };
 
 export const useUser = (): { user: User | undefined; completed: boolean } => {

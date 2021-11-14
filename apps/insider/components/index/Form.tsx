@@ -14,12 +14,12 @@ import { useUserSetter } from '../../hooks/use-user-setter';
 
 type FormType = {
   name: string;
-  avatar: string;
+  // avatar: string;
 };
 
 const initState = {
   name: '',
-  avatar: '',
+  // avatar: '',
 };
 
 const avatarList = [
@@ -64,7 +64,7 @@ export const Form: VFC = () => {
             onChange={(e) => setState({ ...state, name: e.target.value })}
           />
         </Box>
-        <Box sx={{ maxWidth: 250, mb: 2 }}>
+        {/* <Box sx={{ maxWidth: 250, mb: 2 }}>
           <FormLabel>アバター: {avatarList[tabValue].ja}</FormLabel>
           <Tabs
             variant="scrollable"
@@ -91,11 +91,11 @@ export const Form: VFC = () => {
               />
             ))}
           </Tabs>
-        </Box>
+        </Box> */}
         <Button
           variant="outlined"
           onClick={() => {
-            setUser(state.name, state.avatar);
+            setUser(state.name);
             replace('/game');
           }}
         >

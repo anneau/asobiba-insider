@@ -3,19 +3,22 @@ import React, { VFC } from 'react';
 import styled from '@emotion/styled';
 import { Master } from '../components/game/Master';
 import { Theme } from '../components/game/Theme';
+import { Timer } from '../components/game/Timer';
 import { useGame } from '../hooks/use-game';
-import { useAuth } from '../hooks/use-auth';
 
 const Container = styled.div`
   height: 100vh;
   width: 100%;
 `;
 
+const role = (isMaster: boolean, isInsider: boolean): string => {
+  if (isMaster) return 'マスター';
+  if (isInsider) return 'インサイダー';
+  return '庶民';
+};
+
 export const Game: VFC = () => {
-  const { user } = useAuth();
-  const { game } = useGame();
-  const isMaster = user?.uid === game?.master;
-  const hasTheme = !!game?.theme;
+  const { game, isMaster, isInsider, hasTheme, hasStartAt } = useGame();
   if (!game) return <p>Loading...</p>;
   return (
     <Container>
@@ -26,8 +29,12 @@ export const Game: VFC = () => {
         style={{ height: '80%', textAlign: 'center' }}
       >
         <Grid item xs={8}>
-          {isMaster && !hasTheme ? <Master /> : null}
-          {isMaster && hasTheme ? <Theme /> : null}
+          {isMaster && !hasTheme ? <Master /> : <></>}
+          {hasTheme ? (
+            <p>あなたの役職は{role(isMaster, isInsider)}です</p>
+          ) : null}
+          {(isMaster || isInsider) && hasTheme ? <Theme /> : <></>}
+          {hasStartAt ? <Timer /> : <></>}
         </Grid>
       </Grid>
     </Container>

@@ -6,11 +6,17 @@ import { useAuth } from './use-auth';
 type Game = {
   master: string;
   theme: string;
+  insider: string;
+  start_at: string;
 };
 
 export const useGame = (): {
   game: Game | undefined;
   setTheme: (theme: string) => Promise<void>;
+  isMaster: boolean;
+  hasTheme: boolean;
+  isInsider: boolean;
+  hasStartAt: boolean;
 } => {
   const { user: auth } = useAuth();
   const [game, setGame] = useState<Game | undefined>(undefined);
@@ -19,12 +25,18 @@ export const useGame = (): {
     const ref = doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk');
     const unsub = onSnapshot(ref, (doc) => {
       const data = doc.data() as Game;
+      console.log(data);
       setGame(data);
     });
     return () => {
       unsub();
     };
   }, [auth]);
+
+  const isMaster = auth?.uid === game?.master;
+  const hasTheme = !!game?.theme;
+  const isInsider = auth?.uid === game?.insider;
+  const hasStartAt = !!game?.start_at;
 
   const setTheme = useCallback(
     async (theme: string): Promise<void> => {
@@ -36,5 +48,5 @@ export const useGame = (): {
     [game]
   );
 
-  return { game, setTheme };
+  return { game, setTheme, isMaster, hasTheme, isInsider, hasStartAt };
 };
