@@ -1,14 +1,14 @@
-import { Grid } from '@mui/material';
 import React, { VFC } from 'react';
+import { Grid } from '@mui/material';
 import styled from '@emotion/styled';
-import { Game } from '../components/game/Game';
+import { Vote } from '../components/vote/Vote';
 
 const Container = styled.div`
   height: 100vh;
   width: 100%;
 `;
 
-export const GamePage: VFC = () => {
+export const VotePage: VFC = () => {
   return (
     <Container>
       <Grid
@@ -18,11 +18,11 @@ export const GamePage: VFC = () => {
         style={{ height: '80%', textAlign: 'center' }}
       >
         <Grid item xs={8}>
-          <Game />
+          <Vote />
         </Grid>
       </Grid>
     </Container>
   );
 };
 
-export default GamePage;
+export default VotePage;

@@ -7,7 +7,7 @@ export const Theme: VFC = () => {
 
   return (
     <>
-      <Box sx={{ typography: 'subtitle2', mb: 2 }}>テーマ: {game?.theme}</Box>
+      <Box sx={{ typography: 'subtitle2', mb: 2 }}>お題: {game?.theme}</Box>
     </>
   );
 };

@@ -11,6 +11,7 @@ import {
 import { Animation } from '../common/Animation';
 import { useRouter } from 'next/router';
 import { useUserSetter } from '../../hooks/use-user-setter';
+import { avatars } from '../../libs/avatars';
 
 type FormType = {
   name: string;
@@ -21,33 +22,6 @@ const initState = {
   name: '',
   avatar: '',
 };
-
-const avatarList = [
-  {
-    name: 'avocado',
-    ja: 'アボカド',
-  },
-  {
-    name: 'broccoli',
-    ja: 'ブロッコリー',
-  },
-  {
-    name: 'coffee',
-    ja: 'コーヒー',
-  },
-  {
-    name: 'donut',
-    ja: 'ドーナツ',
-  },
-  {
-    name: 'mushroom',
-    ja: 'マッシュルーム',
-  },
-  {
-    name: 'orange',
-    ja: 'オレンジ',
-  },
-];
 
 export const Form: VFC = () => {
   const { replace } = useRouter();
@@ -65,7 +39,7 @@ export const Form: VFC = () => {
           />
         </Box>
         <Box sx={{ maxWidth: 250, mb: 2 }}>
-          <FormLabel>アバター: {avatarList[tabValue].ja}</FormLabel>
+          <FormLabel>アバター: {avatars[tabValue].ja}</FormLabel>
           <Tabs
             variant="scrollable"
             scrollButtons
@@ -73,10 +47,10 @@ export const Form: VFC = () => {
             value={tabValue}
             onChange={(_: React.SyntheticEvent, newValue: number) => {
               setTabValue(newValue);
-              setState({ ...state, avatar: avatarList[newValue].name });
+              setState({ ...state, avatar: avatars[newValue].name });
             }}
           >
-            {avatarList.map((item) => (
+            {avatars.map((item) => (
               <Tab key={item.name} icon={<Animation name={item.name} />} />
             ))}
           </Tabs>

@@ -1,31 +1,31 @@
-import { doc, getDoc } from '@firebase/firestore';
+import { collection, getDocs } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '../libs/firebase';
 import { useAuth } from './use-auth';
 import { User } from '../models/user';
 
-export const useUser = (): { user: User | undefined; completed: boolean } => {
+export const useUsers = (): { users: User[]; completed: boolean } => {
   const { user: auth } = useAuth();
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [users, setUsers] = useState<User[]>([]);
   const [completed, setCompleted] = useState(false);
   useEffect(() => {
     let mounted = true;
     if (!auth) return;
     (async () => {
-      const ref = doc(db, 'users', auth.uid);
-      const snap = await getDoc(ref);
+      const snap = await getDocs(collection(db, 'users'));
+      const tempUsers: User[] = [];
       if (mounted) {
-        if (snap.exists()) {
-          const data = snap.data() as User;
-          setUser(data);
-        }
+        snap.forEach((doc) => {
+          tempUsers.push(doc.data() as User);
+        });
+        setUsers(tempUsers);
         setCompleted(true);
       }
     })();
     return () => {
       mounted = false;
     };
-  }, [auth]);
+  }, [auth, setUsers]);
 
-  return { user, completed };
+  return { users, completed };
 };

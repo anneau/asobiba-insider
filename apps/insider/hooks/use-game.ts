@@ -2,22 +2,18 @@ import { doc, onSnapshot, serverTimestamp, setDoc } from '@firebase/firestore';
 import { useEffect, useState, useCallback } from 'react';
 import { db } from '../libs/firebase';
 import { useAuth } from './use-auth';
-
-type Game = {
-  master: string;
-  theme: string;
-  insider: string;
-  start_at: string;
-};
+import { Game } from '../models/game';
 
 export const useGame = (): {
   game: Game | undefined;
   setTheme: (theme: string) => Promise<void>;
   setStartAt: () => Promise<void>;
+  setAnswer: (answer: string) => Promise<void>;
   isMaster: boolean;
   hasTheme: boolean;
   isInsider: boolean;
   hasStartAt: boolean;
+  hasAnswer: boolean;
   loading: boolean;
 } => {
   const { user: auth } = useAuth();
@@ -44,6 +40,7 @@ export const useGame = (): {
   const hasTheme = !!game?.theme;
   const isInsider = auth?.uid === game?.insider;
   const hasStartAt = !!game?.start_at;
+  const hasAnswer = !!game?.answer;
 
   const setTheme = useCallback(
     async (theme: string): Promise<void> => {
@@ -62,14 +59,26 @@ export const useGame = (): {
     });
   }, [game]);
 
+  const setAnswer = useCallback(
+    async (answer: string): Promise<void> => {
+      await setDoc(doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk'), {
+        ...game,
+        answer,
+      });
+    },
+    [game]
+  );
+
   return {
     game,
     setTheme,
     setStartAt,
+    setAnswer,
     isMaster,
     hasTheme,
     isInsider,
     hasStartAt,
+    hasAnswer,
     loading,
   };
 };

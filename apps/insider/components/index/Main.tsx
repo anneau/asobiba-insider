@@ -9,7 +9,7 @@ export const Main: VFC = () => {
   const { user, completed } = useUser();
   if (!completed) return <Animation name="load" />;
   if (user) {
-    replace('/game');
+    replace('/entrance');
     return <Animation name="load" />;
   }
 

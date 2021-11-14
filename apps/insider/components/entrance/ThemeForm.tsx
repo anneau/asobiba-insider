@@ -6,7 +6,7 @@ type FormType = {
   theme: string;
 };
 
-export const Master: VFC = () => {
+export const ThemeForm: VFC = () => {
   const [state, setState] = useState<FormType>({ theme: '' });
   const { setTheme } = useGame();
   return (
@@ -15,7 +15,7 @@ export const Master: VFC = () => {
       <FormControl>
         <Box sx={{ maxWidth: 250, mb: 2 }}>
           <TextField
-            label="お題"
+            label="お題（全てひらがな）"
             variant="outlined"
             onChange={(e) => setState({ theme: e.target.value })}
           />
