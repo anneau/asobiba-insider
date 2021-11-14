@@ -20,7 +20,13 @@ export const Entrance: VFC = () => {
 
   if (!game) return <Animation name="load" />;
 
-  if (!isMaster) return <Animation name="load" />;
+  if (!isMaster)
+    return (
+      <>
+        <Animation name="load" />
+        <p>ゲームが開始されるのをお待ちください</p>
+      </>
+    );
 
   if (!hasTheme) {
     return <ThemeForm />;

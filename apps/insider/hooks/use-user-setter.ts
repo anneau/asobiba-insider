@@ -4,13 +4,14 @@ import { db } from '../libs/firebase';
 import { useAuth } from './use-auth';
 
 export const useUserSetter = (): {
-  setUser: (name: string) => Promise<void>;
+  setUser: (name: string, avatar: string) => Promise<void>;
 } => {
   const { user } = useAuth();
   const setUser = useCallback(
-    async (name: string): Promise<void> => {
+    async (name: string, avatar: string): Promise<void> => {
       await setDoc(doc(db, 'users', user.uid), {
         name,
+        avatar,
         uid: user.uid,
       });
     },

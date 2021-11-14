@@ -58,8 +58,8 @@ export const Form: VFC = () => {
         <Button
           variant="outlined"
           onClick={() => {
-            setUser(state.name);
-            replace('/game');
+            setUser(state.name, state.avatar);
+            replace('/entrance');
           }}
         >
           送信
