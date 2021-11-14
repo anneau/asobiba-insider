@@ -2,19 +2,16 @@ import { useUser } from '../../hooks/use-user';
 import React, { VFC } from 'react';
 import { useRouter } from 'next/router';
 import { Form } from './Form';
+import { Animation } from '../common/Animation';
 
 export const Main: VFC = () => {
   const { replace } = useRouter();
   const { user, completed } = useUser();
-  if (!completed) return <p>Loading...</p>;
+  if (!completed) return <Animation name="load" />;
   if (user) {
     replace('/game');
-    return <p>ゲーム画面に遷移します</p>;
+    return <Animation name="load" />;
   }
 
-  return (
-    <>
-      <Form />
-    </>
-  );
+  return <Form />;
 };

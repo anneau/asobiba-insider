@@ -5,6 +5,7 @@ import { Master } from '../components/game/Master';
 import { Theme } from '../components/game/Theme';
 import { Timer } from '../components/game/Timer';
 import { useGame } from '../hooks/use-game';
+import { Animation } from '../components/common/Animation';
 
 const Container = styled.div`
   height: 100vh;
@@ -19,7 +20,7 @@ const role = (isMaster: boolean, isInsider: boolean): string => {
 
 export const Game: VFC = () => {
   const { game, isMaster, isInsider, hasTheme, hasStartAt } = useGame();
-  if (!game) return <p>Loading...</p>;
+  if (!game) return <Animation name="load" />;
   return (
     <Container>
       <Grid
@@ -34,7 +35,7 @@ export const Game: VFC = () => {
             <p>あなたの役職は{role(isMaster, isInsider)}です</p>
           ) : null}
           {(isMaster || isInsider) && hasTheme ? <Theme /> : <></>}
-          {hasStartAt ? <Timer /> : <></>}
+          <Timer />
         </Grid>
       </Grid>
     </Container>

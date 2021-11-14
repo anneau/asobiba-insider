@@ -1,5 +1,4 @@
 import React, { VFC, useState } from 'react';
-import Lottie from 'react-lottie';
 import {
   Button,
   FormControl,
@@ -9,17 +8,18 @@ import {
   Box,
   FormLabel,
 } from '@mui/material';
+import { Animation } from '../common/Animation';
 import { useRouter } from 'next/router';
 import { useUserSetter } from '../../hooks/use-user-setter';
 
 type FormType = {
   name: string;
-  // avatar: string;
+  avatar: string;
 };
 
 const initState = {
   name: '',
-  // avatar: '',
+  avatar: '',
 };
 
 const avatarList = [
@@ -64,7 +64,7 @@ export const Form: VFC = () => {
             onChange={(e) => setState({ ...state, name: e.target.value })}
           />
         </Box>
-        {/* <Box sx={{ maxWidth: 250, mb: 2 }}>
+        <Box sx={{ maxWidth: 250, mb: 2 }}>
           <FormLabel>アバター: {avatarList[tabValue].ja}</FormLabel>
           <Tabs
             variant="scrollable"
@@ -77,21 +77,10 @@ export const Form: VFC = () => {
             }}
           >
             {avatarList.map((item) => (
-              <Tab
-                key={item.name}
-                icon={
-                  <Lottie
-                    options={{
-                      animationData: require(`../../public/lottie/${item.name}.json`),
-                    }}
-                    height={100}
-                    width={100}
-                  />
-                }
-              />
+              <Tab key={item.name} icon={<Animation name={item.name} />} />
             ))}
           </Tabs>
-        </Box> */}
+        </Box>
         <Button
           variant="outlined"
           onClick={() => {

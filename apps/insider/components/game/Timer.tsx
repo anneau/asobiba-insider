@@ -1,10 +1,11 @@
 import React, { VFC, useState, useEffect } from 'react';
 import { useGame } from '../../hooks/use-game';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import dayjs from 'dayjs';
+import { Animation } from '../common/Animation';
 
 export const Timer: VFC = () => {
-  const { game } = useGame();
+  const { game, loading, hasStartAt, setStartAt, isMaster } = useGame();
   const [diff, setDiff] = useState({ min: 0, sec: 0 });
 
   const start = dayjs(game?.start_at ?? 0);
@@ -24,11 +25,27 @@ export const Timer: VFC = () => {
     };
   }, [end, current]);
 
-  return (
-    <>
+  if (loading) return <Animation name="load" />;
+
+  if (!hasStartAt && isMaster)
+    return (
       <Box sx={{ typography: 'subtitle2', mb: 2 }}>
-        残り: {diff.min}分{diff.sec}秒
+        <Button variant="outlined" onClick={setStartAt}>
+          ゲームスタート
+        </Button>
       </Box>
-    </>
+    );
+
+  if (end.isBefore(current))
+    return (
+      <Box sx={{ typography: 'subtitle2', mb: 2 }}>
+        <Animation name="notification" />
+      </Box>
+    );
+
+  return (
+    <Box sx={{ typography: 'subtitle2', mb: 2 }}>
+      残り: {diff.min}分{diff.sec}秒
+    </Box>
   );
 };

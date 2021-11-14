@@ -1,4 +1,4 @@
-import { doc, onSnapshot, setDoc } from '@firebase/firestore';
+import { doc, onSnapshot, serverTimestamp, setDoc } from '@firebase/firestore';
 import { useEffect, useState, useCallback } from 'react';
 import { db } from '../libs/firebase';
 import { useAuth } from './use-auth';
@@ -13,20 +13,27 @@ type Game = {
 export const useGame = (): {
   game: Game | undefined;
   setTheme: (theme: string) => Promise<void>;
+  setStartAt: () => Promise<void>;
   isMaster: boolean;
   hasTheme: boolean;
   isInsider: boolean;
   hasStartAt: boolean;
+  loading: boolean;
 } => {
   const { user: auth } = useAuth();
   const [game, setGame] = useState<Game | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (!auth) return;
+    setLoading(true);
     const ref = doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk');
     const unsub = onSnapshot(ref, (doc) => {
-      const data = doc.data() as Game;
-      console.log(data);
+      const data = {
+        ...doc.data(),
+        start_at: doc.data()?.start_at?.toDate(),
+      } as Game;
       setGame(data);
+      setLoading(false);
     });
     return () => {
       unsub();
@@ -48,5 +55,21 @@ export const useGame = (): {
     [game]
   );
 
-  return { game, setTheme, isMaster, hasTheme, isInsider, hasStartAt };
+  const setStartAt = useCallback(async (): Promise<void> => {
+    await setDoc(doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk'), {
+      ...game,
+      start_at: serverTimestamp(),
+    });
+  }, [game]);
+
+  return {
+    game,
+    setTheme,
+    setStartAt,
+    isMaster,
+    hasTheme,
+    isInsider,
+    hasStartAt,
+    loading,
+  };
 };
