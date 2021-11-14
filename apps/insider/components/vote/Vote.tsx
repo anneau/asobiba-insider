@@ -24,7 +24,10 @@ export const Vote: VFC = () => {
   const { setVote } = useVoteSetter();
   const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
   const selectableUsers = users.filter(
-    (user) => user.uid !== game?.master || user.uid !== myself.uid
+    (user) =>
+      user.uid !== game?.master ||
+      user.uid !== myself.uid ||
+      user.uid !== game?.insider
   );
 
   return (
@@ -34,7 +37,10 @@ export const Vote: VFC = () => {
           <FormLabel>インサイダーは「{selectedUser?.name}」</FormLabel>
           {selectableUsers.map((item) => (
             <Button key={item.uid} onClick={() => setSelectedUser(item)}>
-              <Animation name={item.avatar} />
+              <div>
+                <Animation name={item.avatar} />
+                {item.name}
+              </div>
             </Button>
           ))}
         </Box>
