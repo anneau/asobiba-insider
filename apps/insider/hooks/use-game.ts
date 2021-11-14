@@ -42,32 +42,35 @@ export const useGame = (): {
   const hasStartAt = !!game?.start_at;
   const hasAnswer = !!game?.answer;
 
-  const setTheme = useCallback(
-    async (theme: string): Promise<void> => {
-      await setDoc(doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk'), {
-        ...game,
+  const setTheme = useCallback(async (theme: string): Promise<void> => {
+    await setDoc(
+      doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk'),
+      {
         theme,
-      });
-    },
-    [game]
-  );
+      },
+      { merge: true }
+    );
+  }, []);
 
   const setStartAt = useCallback(async (): Promise<void> => {
-    await setDoc(doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk'), {
-      ...game,
-      start_at: serverTimestamp(),
-    });
-  }, [game]);
+    await setDoc(
+      doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk'),
+      {
+        start_at: serverTimestamp(),
+      },
+      { merge: true }
+    );
+  }, []);
 
-  const setAnswer = useCallback(
-    async (answer: string): Promise<void> => {
-      await setDoc(doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk'), {
-        ...game,
+  const setAnswer = useCallback(async (answer: string): Promise<void> => {
+    await setDoc(
+      doc(db, 'games', 'hmuzwvtrQ97XMQzcoGLk'),
+      {
         answer,
-      });
-    },
-    [game]
-  );
+      },
+      { merge: true }
+    );
+  }, []);
 
   return {
     game,
