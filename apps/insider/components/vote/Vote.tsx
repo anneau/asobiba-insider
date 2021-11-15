@@ -15,7 +15,8 @@ const useResultPage = () => {
   const { push } = useRouter();
 
   useEffect(() => {
-    if (!!users && !!votes && users.length === votes.length) push('/result');
+    if (users.length === 0 || votes.length === 0) return;
+    if (users.length === votes.length) push('/result');
   }, [users, votes, push]);
 };
 
@@ -27,9 +28,9 @@ export const Vote: VFC = () => {
   useResultPage();
 
   const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
-  if (!users || !game || !myself) return <Animation name="load" />;
+  if (users?.length === 0 || !game || !myself) return <Animation name="load" />;
   const selectableUsers = users.filter(
-    (user) => user.uid !== game.master || user.uid !== myself.uid
+    (user) => user.uid !== game.master && user.uid !== myself.uid
   );
 
   return (
